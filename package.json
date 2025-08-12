@@ -12,6 +12,9 @@
     "db:migrate": "tsx scripts/db-migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "etl:import": "tsx scripts/etl.ts",
+    "cron:generate-invoices": "tsx scripts/cron/generate-invoices.ts",
+    "cron:payment-reminders": "tsx scripts/cron/payment-reminders.ts",
+    "cron:weekly-report": "tsx scripts/cron/weekly-report.ts",
     "test": "vitest run",
     "test:e2e": "playwright test"
   },
@@ -20,6 +23,7 @@
     "next": "14.2.5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "xlsx": "^0.18.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
