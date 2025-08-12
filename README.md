@@ -68,6 +68,12 @@ Comandos
 - ETL (dry): pnpm etl:import --dry --file ./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx
 - ETL (commit): pnpm etl:import --commit --file ./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx
 - Testes: pnpm test · pnpm test:e2e
+- Via API (POST /api/etl/import):
+  - curl -X POST -H "Content-Type: application/json" \
+    -d '{"mode":"dry","file":"./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx"}' \
+    "$BASE_URL/api/etl/import"
+
+Relatórios são gravados em scripts/reports/etl-<timestamp>.json e um resumo é retornado pela API.
 - Healthcheck: pnpm tsx scripts/healthcheck.ts
 - Testes DB/RLS (local): requer DATABASE_URL apontando para seu Postgres.
   - Copie .env.example para .env.local e ajuste DATABASE_URL

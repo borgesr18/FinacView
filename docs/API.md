@@ -33,6 +33,8 @@ Módulos mínimos
   - POST /api/atendimentos
 - ETL
   - POST /api/etl/import
+    - Request JSON: { "mode": "dry" | "commit", "file": "./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx" }
+    - Response 202 JSON: { ok: boolean, summary: { pacientes, planos, matriculas, faturas, pagamentos, atendimentos }, reportPath: "scripts/reports/etl-<ts>.json" }
 
 Autenticação
 - Supabase Auth via JWT do usuário (Authorization: Bearer)
