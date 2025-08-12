@@ -27,7 +27,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: err }, { status: 500 })
   }
 
-  const receitaMes = (recRows || []).reduce((s, r: any) => s + Number(r.valor || 0), 0)
+  const receitaMes = (recRows || []).reduce((s: number, r: any) => s + Number(r.valor || 0), 0)
 
   const { data: faturasMes, error: mrrErr } = await supabase
     .from("faturas")
@@ -37,7 +37,7 @@ export async function GET(req: Request) {
   if (mrrErr) return NextResponse.json({ error: mrrErr.message }, { status: 500 })
   const mrr = (faturasMes || [])
     .filter((f: any) => f.status === "PAGA" || f.status === "ABERTA")
-    .reduce((s, f: any) => s + Number(f.valor || 0), 0)
+    .reduce((s: number, f: any) => s + Number(f.valor || 0), 0)
 
   const { data: atendUlt30, error: atendErr } = await supabase
     .from("atendimentos")

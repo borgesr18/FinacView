@@ -22,9 +22,8 @@ export async function getClinicaIdForUser(client: ReturnType<typeof createClient
   const { data, error } = await client
     .from("perfis_usuarios")
     .select("clinica_id")
-    .eq("user_id", (client as any).auth.getUser ? (await client.auth.getUser()).data.user?.id : undefined)
     .limit(1)
     .single()
   if (error) return { clinicaId: null, error }
-  return { clinicaId: data?.clinica_id as string | null, error: null }
+  return { clinicaId: (data as any)?.clinica_id as string | null, error: null }
 }

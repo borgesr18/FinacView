@@ -7,7 +7,9 @@ import { supabaseRouteClient, getClinicaIdForUser } from "@/lib/supabase/user"
 export const runtime = "nodejs"
 
 function parseYearMonth(s: string) {
-  const [y, m] = s.split("-").map(Number)
+  const [yRaw, mRaw] = s.split("-")
+  const y = Number(yRaw)
+  const m = Number(mRaw || "1")
   const competencia = new Date(Date.UTC(y, (m || 1) - 1, 1)).toISOString().slice(0, 10)
   return competencia
 }
