@@ -7,6 +7,8 @@ Descrição
   - GET /api/docs (Swagger UI)
 
 Módulos mínimos
+- Auth
+  - POST /api/auth/register — cria usuário (Service Role) e perfis_usuarios (role=ADMIN) na clínica default
 - Dashboard
   - GET /api/dashboard/kpis?from=YYYY-MM&amp;to=YYYY-MM
 - Pacientes
