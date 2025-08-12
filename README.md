@@ -45,6 +45,22 @@ Setup local
 4) Suba o dev:
    - pnpm dev
 
+Autenticação (Supabase Auth)
+- Páginas: /login, /register, /forgot
+- Registro: POST /api/auth/register cria usuário via Service Role e um perfil ADMIN em perfis_usuarios na clínica default (DEFAULT_CLINIC_NAME).
+- Middleware protege rotas de app e redireciona não autenticados para /login.
+- Variáveis necessárias:
+  - NEXT_PUBLIC_SUPABASE_URL
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - SUPABASE_SERVICE_ROLE_KEY (server-side apenas)
+  - DEFAULT_CLINIC_NAME (opcional, default "Clínica Exemplo")
+
+Como testar Auth (dev)
+1) Defina as envs acima em .env.local.
+2) Acesse /register e crie um usuário (nome, email, senha).
+3) Faça login em /login; você será redirecionado para /dashboard se ok.
+4) Acesse páginas protegidas; sem sessão você será enviado a /login.
+
 Comandos
 - Lint/Typecheck: pnpm lint · pnpm typecheck
 - Build/Start: pnpm build · pnpm start
