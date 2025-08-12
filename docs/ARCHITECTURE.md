@@ -8,6 +8,12 @@ Visão Geral
 - Storage: Supabase Storage (comprovantes)
 - Observabilidade: logger pino/winston; Sentry opcional
 - Deploy: Vercel; Cron para jobs
+## Auth & Perfis
+
+- Middleware protege rotas de aplicação e redireciona usuários não autenticados para /login.
+- Registro: POST /api/auth/register usa SUPABASE_SERVICE_ROLE_KEY (server-side) para criar o usuário e um perfil ADMIN em perfis_usuarios associado à clínica default (DEFAULT_CLINIC_NAME).
+- No cliente, o Supabase usa apenas NEXT_PUBLIC_SUPABASE_ANON_KEY e nunca o Service Role.
+
 
 Diagrama (alto nível)
 [Browser] ⇄ [Next.js App Router]
