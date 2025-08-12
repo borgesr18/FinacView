@@ -1,0 +1,35 @@
+{
+  "info": {
+    "name": "FinacView",
+    "_postman_id": "00000000-0000-0000-0000-000000000000",
+    "description": "Coleção inicial de endpoints FinacView",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "OpenAPI JSON",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/openapi" }
+    },
+    {
+      "name": "Swagger UI",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/docs" }
+    },
+    {
+      "name": "Dashboard KPIs",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/dashboard/kpis" }
+    },
+    {
+      "name": "Pacientes List",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/pacientes" }
+    },
+    {
+      "name": "Planos List",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/planos" }
+    },
+    {
+      "name": "Matrículas List",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/matriculas" }
+    }
+  ],
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000" }]
+}
