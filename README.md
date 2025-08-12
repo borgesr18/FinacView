@@ -30,14 +30,27 @@ Estrutura
 ├─ tests/
 ├─ data/
 ├─ .env.example
+├─ Makefile
 └─ package.json
 
-Comandos (quando implementados)
-- Local: pnpm i → pnpm db:migrate → pnpm db:seed → pnpm dev
+Setup local
+1) Copie .env.example para .env.local e preencha as variáveis (URLs/keys do Supabase).
+2) Instale dependências:
+   - pnpm i
+3) Migração e seed iniciais:
+   - pnpm db:migrate
+   - pnpm db:seed
+4) Suba o dev:
+   - pnpm dev
+
+Comandos
+- Lint/Typecheck: pnpm lint · pnpm typecheck
+- Build/Start: pnpm build · pnpm start
+- DB: pnpm db:migrate · pnpm db:seed
 - ETL (dry): pnpm etl:import --dry --file ./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx
 - ETL (commit): pnpm etl:import --commit --file ./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx
-- Build: pnpm build
-- Testes: pnpm test / pnpm test:e2e
+- Testes: pnpm test · pnpm test:e2e
+- Healthcheck: pnpm tsx scripts/healthcheck.ts
 
 Milestones
 1) Docs & Setup
