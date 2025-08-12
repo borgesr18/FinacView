@@ -81,6 +81,28 @@ export async function GET() {
             observacoes: { type: "string", maxLength: 1000 }
           }
         }
+        ,
+        FaturaCreate: {
+          type: "object",
+          required: ["matricula_id","competencia","valor","vencimento"],
+          properties: {
+            matricula_id: { type: "string", format: "uuid" },
+            competencia: { type: "string", example: "2025-09-01" },
+            valor: { type: "number", minimum: 0 },
+            vencimento: { type: "string", example: "2025-09-05" },
+            status: { type: "string", enum: ["ABERTA","PAGA","ATRASADA"], default: "ABERTA" },
+            observacoes: { type: "string", maxLength: 1000 }
+          }
+        },
+        FaturasGenerate: {
+          type: "object",
+          required: ["competencia"],
+          properties: {
+            competencia: { type: "string", example: "2025-09" },
+            onlyAtivas: { type: "boolean", default: true },
+            dueDay: { type: "integer", minimum: 1, maximum: 28 }
+          }
+        }
       },
       responses: {
         ValidationError: { description: "Validation error", content: { "application/json": { schema: { $ref: "#/components/schemas/Error" } } } },
@@ -158,11 +180,33 @@ export async function GET() {
         }
       },
       "/api/faturas/generate": {
-        post: { summary: "Gerar faturas para período", responses: { "202": { description: "Aceito" } } }
+        post: {
+          summary: "Gerar faturas para período",
+          requestBody: {
+            required: true,
+            content: { "application/json": { schema: { $ref: "#/components/schemas/FaturasGenerate" } } }
+          },
+          responses: {
+            "202": { description: "Aceito" },
+            "400": { $ref: "#/components/responses/ValidationError" },
+            "429": { $ref: "#/components/responses/RateLimited" }
+          }
+        }
       },
       "/api/faturas": {
         get: { summary: "Listar faturas", responses: { "200": { description: "OK" } } },
-        post: { summary: "Criar fatura", responses: { "201": { description: "Criado" } } }
+        post: {
+          summary: "Criar fatura",
+          requestBody: {
+            required: true,
+            content: { "application/json": { schema: { $ref: "#/components/schemas/FaturaCreate" } } }
+          },
+          responses: {
+            "201": { description: "Criado" },
+            "400": { $ref: "#/components/responses/ValidationError" },
+            "429": { $ref: "#/components/responses/RateLimited" }
+          }
+        }
       },
       "/api/pagamentos": {
         post: {

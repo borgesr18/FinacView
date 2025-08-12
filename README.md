@@ -7,6 +7,8 @@ Docs
 - docs/ARCHITECTURE.md
 - docs/API.md
 - docs/ETL-SPEC.md
+- Swagger UI: /api/docs
+- Postman: docs/FinacView.postman_collection.json
 
 Estrutura
 .
