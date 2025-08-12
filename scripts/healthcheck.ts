@@ -82,6 +82,26 @@ async function main() {
     report.checks.rls_enabled = rlsOff.length === 0
     if (rlsOff.length) report.errors.push(`RLS disabled: ${rlsOff.join(", ")}`)
 
+    let reconOk = false
+    try {
+      await client.query("begin")
+      const { rows: [cl] } = await client.query(`insert into clinicas (nome) values ('HC Temp Clínica') returning id`)
+      const clinicaId = cl.id
+      const { rows: [pac] } = await client.query(`insert into pacientes (clinica_id, nome) values ($1,'HC Paciente') returning id`, [clinicaId])
+      const { rows: [pl] } = await client.query(`insert into planos (clinica_id, nome, modalidade, preco_mensal) values ($1,'HC Plano','PILATES', 100.00) returning id`, [clinicaId])
+      const { rows: [mat] } = await client.query(`insert into matriculas (clinica_id, paciente_id, plano_id, data_inicio, status, valor_mensal) values ($1,$2,$3,current_date,'ATIVA',100.00) returning id`, [clinicaId, pac.id, pl.id])
+      const { rows: [ft] } = await client.query(`insert into faturas (clinica_id, matricula_id, competencia, valor, vencimento, status) values ($1,$2,current_date,100.00,current_date,'ABERTA') returning id`, [clinicaId, mat.id])
+      await client.query(`insert into pagamentos (clinica_id, fatura_id, data_pagamento, valor, metodo) values ($1,$2,current_date,100.00,'PIX')`, [clinicaId, ft.id])
+      const { rows: [st] } = await client.query(`select status from faturas where id=$1`, [ft.id])
+      reconOk = st?.status === "PAGA"
+      await client.query("rollback")
+    } catch (e) {
+      reconOk = false
+      await client.query("rollback")
+    }
+    report.checks.reconcileTrigger = { ok: reconOk }
+    if (!reconOk) report.errors.push("Reconciliation trigger failed")
+
     report.ok = report.errors.length === 0
     await client.end()
   } catch (e: any) {
