@@ -53,6 +53,11 @@ Comandos
 - ETL (commit): pnpm etl:import --commit --file ./data/LISTA_DE_MATRICULAS_E_FATURAMENTO.xlsx
 - Testes: pnpm test · pnpm test:e2e
 - Healthcheck: pnpm tsx scripts/healthcheck.ts
+- Testes DB/RLS (local): requer DATABASE_URL apontando para seu Postgres.
+  - Copie .env.example para .env.local e ajuste DATABASE_URL
+  - Rode: pnpm test -- --grep "RLS isolation" ou pnpm test para todos os testes
+  - Healthcheck DB: pnpm tsx scripts/healthcheck.ts
+
 
 Milestones
 1) Docs & Setup
