@@ -2,11 +2,15 @@ import { NextResponse } from "next/server"
 import { planoCreateSchema } from "@/lib/validation/planos"
 import { getClientIp } from "@/lib/http/ip"
 import { rateLimit } from "@/lib/security/rateLimit"
+import { supabaseRouteClient, getClinicaIdForUser } from "@/lib/supabase/user"
 
 export const runtime = "nodejs"
 
-export async function GET() {
-  return NextResponse.json({ status: "ok", items: [] })
+export async function GET(req: Request) {
+  const supabase = supabaseRouteClient(req)
+  const { data, error } = await supabase.from("planos").select("*").order("nome", { ascending: true }).limit(100)
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  return NextResponse.json({ items: data })
 }
 
 export async function POST(req: Request) {
@@ -20,5 +24,12 @@ export async function POST(req: Request) {
   const parsed = planoCreateSchema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ error: "validation_error", details: parsed.error.flatten() }, { status: 400 })
 
-  return new NextResponse(null, { status: 201 })
+  const supabase = supabaseRouteClient(req)
+  const { clinicaId, error: clinErr } = await getClinicaIdForUser(supabase)
+  if (clinErr || !clinicaId) return NextResponse.json({ error: clinErr?.message || "clinica_not_found" }, { status: 403 })
+
+  const toInsert = { ...parsed.data, clinica_id: clinicaId }
+  const { data, error } = await supabase.from("planos").insert(toInsert).select("*").single()
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+  return NextResponse.json(data, { status: 201 })
 }
