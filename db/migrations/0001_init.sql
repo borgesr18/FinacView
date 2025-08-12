@@ -100,6 +100,14 @@ create table if not exists saldos_consultorio (
 
 create schema if not exists auth;
 
+create or replace function auth.uid()
+returns uuid
+language sql
+stable
+as $$
+  select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
+$$;
+
 create or replace function auth.clinica_id()
 returns uuid
 language sql
@@ -282,5 +290,34 @@ create policy wrt_saldos on saldos_consultorio
     )
   )
   with check (true);
+
+create index if not exists idx_perfis_usuarios_clinica on perfis_usuarios (clinica_id);
+create index if not exists idx_perfis_usuarios_role on perfis_usuarios (role);
+
+create index if not exists idx_pacientes_clinica on pacientes (clinica_id);
+create index if not exists idx_pacientes_documento on pacientes (documento);
+
+create index if not exists idx_planos_clinica on planos (clinica_id);
+create index if not exists idx_planos_modalidade on planos (modalidade);
+
+create index if not exists idx_matriculas_clinica on matriculas (clinica_id);
+create index if not exists idx_matriculas_paciente on matriculas (paciente_id);
+create index if not exists idx_matriculas_plano on matriculas (plano_id);
+create index if not exists idx_matriculas_status on matriculas (status);
+
+create index if not exists idx_faturas_clinica on faturas (clinica_id);
+create index if not exists idx_faturas_matricula on faturas (matricula_id);
+create index if not exists idx_faturas_status on faturas (status);
+create index if not exists idx_faturas_vencimento on faturas (vencimento);
+
+create index if not exists idx_pagamentos_clinica on pagamentos (clinica_id);
+create index if not exists idx_pagamentos_fatura on pagamentos (fatura_id);
+create index if not exists idx_pagamentos_data on pagamentos (data_pagamento);
+
+create index if not exists idx_atendimentos_clinica on atendimentos (clinica_id);
+create index if not exists idx_atendimentos_matricula on atendimentos (matricula_id);
+create index if not exists idx_atendimentos_data on atendimentos (data);
+create index if not exists idx_atendimentos_tipo on atendimentos (tipo);
+create index if not exists idx_atendimentos_status on atendimentos (status);
 
 commit;
