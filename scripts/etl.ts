@@ -5,9 +5,9 @@ import * as XLSX from "xlsx"
 import { createClient } from "@supabase/supabase-js"
 import { env } from "./utils/env"
 
-type EtlMode = "dry" | "commit"
+export export type EtlMode = "dry" | "commit"
 type BasicCounts = { inserted: number; updated: number; skipped: number; errors: number }
-type EtlReport = {
+export export type EtlReport = {
   mode: EtlMode
   file: string
   startedAt: string
@@ -113,8 +113,7 @@ async function ensureDefaultClinic(client: any) {
   return ins.data.id
 }
 
-async function main() {
-  const { mode, file } = parseArgs()
+export async function runEtl(mode: EtlMode, file: string) {
   const reportDir = path.join("scripts", "reports")
   fs.mkdirSync(reportDir, { recursive: true })
   const ts = Date.now()
@@ -431,8 +430,22 @@ async function main() {
 
   fs.mkdirSync(reportDir, { recursive: true })
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2))
-  console.log(`ETL ${report.mode} completed. Report: ${reportPath}`)
-  if (report.errors.length) process.exit(1)
+  return { report, reportPath }
 }
 
-main()
+async function main() {
+  const { mode, file } = parseArgs()
+  try {
+    const { report, reportPath } = await runEtl(mode, file)
+    console.log(`ETL ${report.mode} completed. Report: ${reportPath}`)
+    if (report.errors.length) process.exit(1)
+  } catch (e) {
+    console.error(e)
+    process.exit(1)
+  }
+}
+
+if (typeof require !== "undefined" && (require as any).main === module) {
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  main()
+}
