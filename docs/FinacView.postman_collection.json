@@ -23,12 +23,48 @@
       "request": { "method": "GET", "url": "{{baseUrl}}/api/pacientes" }
     },
     {
+      "name": "Pacientes Create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"Maria\",\n  \"email\": \"maria@example.com\"\n}" }, "url": "{{baseUrl}}/api/pacientes" }
+    },
+    {
       "name": "Planos List",
       "request": { "method": "GET", "url": "{{baseUrl}}/api/planos" }
     },
     {
+      "name": "Planos Create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nome\": \"2x/semana - MENSAL\",\n  \"modalidade\": \"PILATES\",\n  \"frequencia_semana\": 2,\n  \"periodicidade\": \"MENSAL\"\n}" }, "url": "{{baseUrl}}/api/planos" }
+    },
+    {
       "name": "Matrículas List",
       "request": { "method": "GET", "url": "{{baseUrl}}/api/matriculas" }
+    },
+    {
+      "name": "Matrículas Create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"paciente_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"plano_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"data_inicio\": \"2025-01-01\"\n}" }, "url": "{{baseUrl}}/api/matriculas" }
+    },
+    {
+      "name": "Faturas List",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/faturas" }
+    },
+    {
+      "name": "Faturas Create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"matricula_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"competencia\": \"2025-09-01\",\n  \"valor\": 100,\n  \"vencimento\": \"2025-09-05\"\n}" }, "url": "{{baseUrl}}/api/faturas" }
+    },
+    {
+      "name": "Pagamentos Create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"fatura_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"valor\": 100,\n  \"metodo\": \"PIX\"\n}" }, "url": "{{baseUrl}}/api/pagamentos" }
+    },
+    {
+      "name": "Atendimentos List",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/atendimentos" }
+    },
+    {
+      "name": "Atendimentos Create",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"matricula_id\": \"00000000-0000-0000-0000-000000000000\",\n  \"data\": \"2025-09-01T09:00:00Z\",\n  \"tipo\": \"CONSULTORIO\",\n  \"status\": \"REALIZADO\"\n}" }, "url": "{{baseUrl}}/api/atendimentos" }
+    },
+    {
+      "name": "Faturas Generate",
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"competencia\": \"2025-09\"\n}" }, "url": "{{baseUrl}}/api/faturas/generate" }
     }
   ],
   "variable": [{ "key": "baseUrl", "value": "http://localhost:3000" }]
