@@ -14,11 +14,15 @@ Visão Geral
 - Registro: POST /api/auth/register usa SUPABASE_SERVICE_ROLE_KEY (server-side) para criar o usuário e um perfil ADMIN em perfis_usuarios associado à clínica default (DEFAULT_CLINIC_NAME).
 - No cliente, o Supabase usa apenas NEXT_PUBLIC_SUPABASE_ANON_KEY e nunca o Service Role.
 
+## Supabase nos handlers (Bearer-mode)
+- Handlers usam um cliente Supabase server-side que injeta Authorization: Bearer <jwt> a partir do header da requisição.
+- Toda query depende de RLS; não resolvemos user_id manualmente. Para obter clinica_id atual, lemos perfis_usuarios com RLS e pegamos a primeira linha visível.
+- Benefício: isolamento multi-clínica garantido por RLS sem lógica condicional de filtragem na aplicação.
 
 Diagrama (alto nível)
 [Browser] ⇄ [Next.js App Router]
   ├─ Server Actions/Route Handlers (API REST)
-  │   ├─ Supabase JS (server-side)
+  │   ├─ Supabase JS (server-side, bearer-mode)
   │   └─ RLS (por clinica_id e roles)
   └─ UI (shadcn + Tailwind)
 

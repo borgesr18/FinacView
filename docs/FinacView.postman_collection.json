@@ -78,6 +78,14 @@
     {
       "name": "Faturas Generate",
       "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"competencia\": \"2025-09\"\n}" }, "url": "{{baseUrl}}/api/faturas/generate" }
+    },
+    {
+      "name": "Matrículas Encerrar",
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/matriculas/00000000-0000-0000-0000-000000000000/encerrar" }
+    },
+    {
+      "name": "Matrículas Pausar",
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/matriculas/00000000-0000-0000-0000-000000000000/pausar" }
     }
   ],
   "variable": [{ "key": "baseUrl", "value": "http://localhost:3000" }]
