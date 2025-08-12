@@ -5,9 +5,9 @@ import * as XLSX from "xlsx"
 import { createClient } from "@supabase/supabase-js"
 import { env } from "./utils/env"
 
-export export type EtlMode = "dry" | "commit"
+export type EtlMode = "dry" | "commit"
 type BasicCounts = { inserted: number; updated: number; skipped: number; errors: number }
-export export type EtlReport = {
+export type EtlReport = {
   mode: EtlMode
   file: string
   startedAt: string
